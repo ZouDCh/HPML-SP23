@@ -119,6 +119,7 @@ if __name__=="__main__":
     elif resnetsize == 50:
         net = torchvision.models.resnet50()
     if gpu>1:
+        #Apply DP
         net = torch.nn.DataParallel(net)
     net.to(device)
     criterion = nn.CrossEntropyLoss()

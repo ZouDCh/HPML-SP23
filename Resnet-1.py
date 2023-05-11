@@ -68,6 +68,7 @@ def train_mixed(net, epochs=2):
             inputs, labels = data[0].to(device), data[1].to(device)
             optimizer.zero_grad()
 
+            #Apply mixed precision
             with torch.amp.autocast(device_type='cuda', dtype=torch.float16):
                 outputs = net(inputs)
                 loss = criterion(outputs, labels)

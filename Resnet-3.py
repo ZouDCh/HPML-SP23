@@ -146,6 +146,7 @@ if __name__=="__main__":
     elif resnetsize == 50:
         net = torchvision.models.resnet50()
     if gpu>1:
+        #Fit the model to DDP
         net.to(device)
         net = nn.SyncBatchNorm.convert_sync_batchnorm(net)
         net = nn.parallel.DistributedDataParallel(net)
