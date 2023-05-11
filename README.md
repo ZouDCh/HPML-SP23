@@ -58,17 +58,20 @@ CUDA_VISIBLE_DEVICES="" python inference.py --model_name xlm-roberta-base --scri
 ```
 
 ## The Results
-### Resnet
+### Training Phase
 The approaches speeds up the traning of the model significantly. Interestingly, the mixed precision works exceptionally well with one GPU, and provides less speedup when used on multiple GPUs.  
 ![Resnet-1](images/resnet_plt1.png)  
+![RoBERTa-1](images/roberta-speed-up-by-methods.png)
 The batch size also affects training time. For example, this is a graph comparing two batch sizes using 4 GPUs. As a larger batch size enables faster training, it is used in the graph above.  
 ![Resnet-2](images/resnet_plt2.png)  
+![RoBERTa-2](images/roberta-time-by-batch-size.png)
+
+## Inference Phase
 The Quantization is only supported on CPUs. And combined with TorchScript, it can slightly reduce inference time. Quantization itself does not do much, as the overhead it introduces outweights the benefit.  
 ![Resnet-3](images/resnet_plt3.png)  
+![RoBERTa-3](images/roberta-inference-on-cpu.png)
 TorchScript can significantly speed up inference on GPUs.  
 ![Resnet-4](images/resnet_plt4.png)
-
-### RoBERTa
-
+![RoBERTa-4](images/roberta-inference-on-gpu.png)
 
 ### Observations and Conclusions
