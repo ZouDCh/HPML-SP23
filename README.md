@@ -31,6 +31,32 @@ The -m refers to mixed precisoin, and -r refers to Resnet size. The program will
 
 ### RoBERTa
 
+`nlp_utils.py` contains the utility functions for loading the dataset and preprocessing the data.
+`main.py` contains the code for training and evaluating the RoBERTa model.
+`inference.py` contains the code for evaluating the RoBERTa model on the test set.
+
+In order to retrain the model and reproduce our experiments results, run the following command:
+```
+CUDA_VISIBLE_DEVICES=$1 python -m torch.distributed.launch --nproc_per_node=$2 main.py --model_name $3 --batch-size $4 [--mixed]
+```
+The first argument specifies the GPU id, the second specifies the number of GPUs, the third specifies the model name, and the fourth specifies the batch size. Use `--mixed` to enable mixed precision.
+
+To be more specific, if you want to reproduce the results of training RoBERTa-base on 4 GPUs with batch size 32 per GPU and mixed precision, run the following command:
+```
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --model_name xlm-roberta-base --batch-size 32 --mixed
+```
+
+In order to reproduce the inference experiments, run the following command:
+```
+CUDA_VISIBLE_DEVICES=$1 python inference.py --model_name $2 [--script] [--quantize]
+```
+The first argument specifies the GPU/CPU. Use `--script` to enable TorchScript and `--quantize` to enable quantization.
+
+To be more specific, if you want to reproduce the results of inference on RoBERTa-base with TorchScript and quantization on CPU, run the following command:
+```
+CUDA_VISIBLE_DEVICES="" python inference.py --model_name xlm-roberta-base --script --quantize
+```
+
 ## The Results
 ### Resnet
 The approaches speeds up the traning of the model significantly. Interestingly, the mixed precision works exceptionally well with one GPU, and provides less speedup when used on multiple GPUs.  
@@ -43,5 +69,6 @@ TorchScript can significantly speed up inference on GPUs.
 ![Resnet-4](images/resnet_plt4.png)
 
 ### RoBERTa
+
 
 ### Observations and Conclusions
